@@ -1,0 +1,3 @@
+#!/bin/sh
+cc -std=c99 -Wall -Wextra example.c -O3 -o cu_test && ./cu_test
+rm cu_test
