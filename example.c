@@ -60,28 +60,32 @@ int user_type_comparer(user_type* a, user_type* b) {
     return false;
 }
 
+const char* user_type_string(user_type* a, user_type* b) {
+    char* str = malloc(64 * sizeof(char));
+    sprintf(str,"\n expected - {%d, %c}, actual - {%d, %c}", a->field1, a->field2, b->field1, b->field2);
+    return str;
+}
 
 TEST(Custom_Type_Equals_Success) {
 
-    user_type actual   = {1, 'x'};
     user_type expected = {1, 'x'};
+    user_type actual   = {1, 'x'};
 
-    char* str = malloc(64 * sizeof(char));
-    sprintf(str,"\n actual - {%d, %c}, expected - {%d, %c}", actual.field1, actual.field2, expected.field1, expected.field2);
-
-    ASSERT_EQ_CUSTOM(&actual, &expected, user_type_comparer, str);
+    const char* str = user_type_string(&expected, &actual);
+    
+    ASSERT_EQ_CUSTOM(&expected, &actual, user_type_comparer, str);
 }
 
 TEST(Custom_Type_Equals_Fail) {
 
-    user_type actual   = {420, 'x'};
     user_type expected = {69, 'x'};
+    user_type actual   = {420, 'x'};
 
-    char* str = malloc(128 * sizeof(char));
-    sprintf(str,"actual - {%d, %c}, expected - {%d, %c}", actual.field1, actual.field2, expected.field1, expected.field2);
+    const char* str = user_type_string(&expected, &actual);
 
-    ASSERT_EQ_CUSTOM(&actual, &expected, user_type_comparer, str);
+    ASSERT_EQ_CUSTOM(&expected, &actual, user_type_comparer, str);
 }
+
 TEST(Ptr_Null_Success) {
     int i = 77;
     int* pi = &i;
